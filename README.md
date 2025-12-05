@@ -138,7 +138,7 @@ flags:
 <!-- editorconfig-checker-enable -->
 
 A `Command` may be have an `After` hook for validating and transforming
-parameter values after parsing. When a pointer to a [ValueError] is returned from the `After` hook, the error message will be formatted as if it originated from a command-line flag:
+parameter values after parsing. When a pointer to a [ValueError](https://pkg.go.dev/github.com/jonathonwebb/tinycli#ValueError) is returned from the `After` hook, the error message will be formatted as if it originated from a command-line flag:
 
 <!-- editorconfig-checker-disable -->
 ```go
