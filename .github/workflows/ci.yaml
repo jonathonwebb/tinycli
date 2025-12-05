@@ -1,0 +1,30 @@
+---
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        go: ["stable", "oldstable"]
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - run: make check
+      - uses: codecov/codecov-action@v4
+        with:
+          files: tmp/cover.out
+          token: ${{ secrets.CODECOV_TOKEN }}
