@@ -15,6 +15,23 @@ go get github.com/jonathonwebb/tinycli
 
 ## Usage
 
+<!-- editorconfig-checker-disable -->
+```go
+type p struct {
+	// ...
+}
+
+func main() {
+	var params p
+	cmd := cli.Command[*p]{ 
+		// ...
+	}
+	env := cli.DefaultEnv(&params)
+	os.Exit(int(cmd.Execute(context.Background(), env)))
+}
+```
+<!-- editorconfig-checker-enable -->
+
 A `tinycli` [Command](https://pkg.go.dev/github.com/jonathonwebb/tinycli#Command) parses command-line flags and environment variables, storing values in a custom parameter object that is accessible to command actions.
 
 The execution environment of a `Command` is encapsulated in an [Env](https://pkg.go.dev/github.com/jonathonwebb/tinycli#Env). The default env looks like:

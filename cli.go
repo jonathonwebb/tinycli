@@ -3,6 +3,19 @@ Package tinycli implements a simple command-line interface framework.
 
 # Usage
 
+	type p struct {
+		// ...
+	}
+
+	func main() {
+		var params p
+		cmd := cli.Command[*p]{
+			// ...
+		}
+		env := cli.DefaultEnv(&params)
+		os.Exit(int(cmd.Execute(context.Background(), env)))
+	}
+
 A tinycli [Command] parses command-line flags and environment variables, storing
 values in a custom parameter object that is accessible to command actions.
 
