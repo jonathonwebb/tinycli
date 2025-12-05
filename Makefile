@@ -16,7 +16,7 @@ check: deps-check fmt-check vet cover-check
 deps:
 	go mod tidy -v
 
-.PHONE: deps-check
+.PHONY: deps-check
 deps-check:
 	go mod tidy -diff
 	go mod verify

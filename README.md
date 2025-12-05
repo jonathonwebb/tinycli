@@ -1,6 +1,9 @@
 # tinycli
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/jonathonwebb/tinycli.svg)](https://pkg.go.dev/github.com/jonathonwebb/tinycli)
+[![CI](https://github.com/jonathonwebb/tinycli/actions/workflows/ci.yaml/badge.svg)](https://github.com/jonathonwebb/tinycli/actions/workflows/ci.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jonathonwebb/tinycli)](https://goreportcard.com/report/github.com/jonathonwebb/tinycli)
+[![codecov](https://codecov.io/github/jonathonwebb/tinycli/graph/badge.svg?token=TD5YgMcIvw)](https://codecov.io/github/jonathonwebb/tinycli)
 
 Package `tinycli` implements a simple command-line interface framework.
 
