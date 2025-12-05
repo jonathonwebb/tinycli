@@ -97,7 +97,7 @@ c := Command[*p]{
 
 var params p
 e := DefaultEnv[*p](&params)
-status := c.Execute(context.Background(), &e)
+status := c.Execute(context.Background(), e)
 ```
 <!-- editorconfig-checker-enable -->
 

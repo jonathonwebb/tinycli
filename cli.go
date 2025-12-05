@@ -76,7 +76,7 @@ arguments:
 
 	var params p
 	e := DefaultEnv[*p](&params)
-	status := c.Execute(context.Background(), &e)
+	status := c.Execute(context.Background(), e)
 
 A non-goal of tinycli is automatically formatting Command usage and help text.
 Instead, usage and help text for a Command are manually configured:
@@ -151,14 +151,14 @@ type Env[P any] struct {
 //
 // The resulting Env will use the [os.Stderr] and [os.Stdout] streams,
 // [os.Args], and environment variables from [os.Environ].
-func DefaultEnv[P any](params P) Env[P] {
+func DefaultEnv[P any](params P) *Env[P] {
 	environ := os.Environ()
 	vars := make(map[string]string, len(environ))
 	for _, v := range environ {
 		key, value, _ := strings.Cut(v, "=")
 		vars[key] = value
 	}
-	return Env[P]{
+	return &Env[P]{
 		Err:    os.Stderr,
 		Out:    os.Stdout,
 		Args:   os.Args,
