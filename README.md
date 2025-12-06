@@ -143,8 +143,8 @@ parameter values after parsing. When a pointer to a [ValueError](https://pkg.go.
 <!-- editorconfig-checker-disable -->
 ```go
 c := Command[*p]{
-	After: func(params *p) error {
-		if p.port > 65535 {
+	After: func(e *Env[*p]) error {
+		if e.Params.port > 65535 {
 			return &cli.ValueError{
 				Name: "port",
 				Err:  errors.New("cannot exceed 65535"),

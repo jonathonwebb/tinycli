@@ -151,17 +151,17 @@ func TestCommand_Execute(t *testing.T) {
 				"rootInt":  "ROOT_INT",
 				"rootBool": "ROOT_BOOL",
 			},
-			After: func(p *p) error {
-				if p.RootStr == "value_err" {
+			After: func(e *cli.Env[*p]) error {
+				if e.Params.RootStr == "value_err" {
 					return &cli.ValueError{
 						Name: "rootStr",
 						Err:  errCustomTest,
 					}
 				}
-				if p.RootStr == "generic_err" {
+				if e.Params.RootStr == "generic_err" {
 					return errCustomTest
 				}
-				if p.RootStr == "unknown_flag_err" {
+				if e.Params.RootStr == "unknown_flag_err" {
 					return &cli.ValueError{
 						Name: "rootUnknown",
 						Err:  errCustomTest,
@@ -188,17 +188,17 @@ func TestCommand_Execute(t *testing.T) {
 						e.Printf("sub out\n")
 						return cli.ExitSuccess
 					},
-					After: func(p *p) error {
-						if p.SubStr == "value_err" {
+					After: func(e *cli.Env[*p]) error {
+						if e.Params.SubStr == "value_err" {
 							return &cli.ValueError{
 								Name: "subStr",
 								Err:  errCustomTest,
 							}
 						}
-						if p.SubStr == "generic_err" {
+						if e.Params.SubStr == "generic_err" {
 							return errCustomTest
 						}
-						if p.SubStr == "unknown_flag_err" {
+						if e.Params.SubStr == "unknown_flag_err" {
 							return &cli.ValueError{
 								Name: "subUnknown",
 								Err:  errCustomTest,
@@ -219,7 +219,7 @@ func TestCommand_Execute(t *testing.T) {
 						e.Printf("nil_varmap out\n")
 						return cli.ExitSuccess
 					},
-					After: func(p *p) error {
+					After: func(e *cli.Env[*p]) error {
 						return nil
 					},
 				},
@@ -235,7 +235,7 @@ func TestCommand_Execute(t *testing.T) {
 						e.Printf("nil_flags out\n")
 						return cli.ExitSuccess
 					},
-					After: func(p *p) error {
+					After: func(e *cli.Env[*p]) error {
 						return nil
 					},
 				},
@@ -532,8 +532,8 @@ func ExampleCommand() {
 			Vars: map[string]string{
 				"port": "FOO_PORT",
 			},
-			After: func(p *p) error {
-				if p.port > 65535 {
+			After: func(e *cli.Env[*p]) error {
+				if e.Params.port > 65535 {
 					return &cli.ValueError{
 						Name: "port",
 						Err:  errors.New("cannot exceed 65535"),
@@ -562,9 +562,9 @@ flags:
 				fs.StringVar(&p.env, "env", "production", "")
 				fs.BoolVar(&p.verbose, "v", false, "")
 			},
-			After: func(p *p) error {
-				if p.env == "dev" && !p.verbose {
-					p.verbose = true
+			After: func(e *cli.Env[*p]) error {
+				if e.Params.env == "dev" && !e.Params.verbose {
+					e.Params.verbose = true
 				}
 				return nil
 			},

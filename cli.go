@@ -113,8 +113,8 @@ from the After hook, the error message will be formatted as if it originated
 from a command-line flag:
 
 	c := Command[*p]{
-		After: func(params *p) error {
-			if p.port > 65535 {
+		After: func(e *Env[*p]) error {
+			if e.Params.port > 65535 {
 				return &cli.ValueError{
 					Name: "port",
 					Err:  errors.New("cannot exceed 65535"),
@@ -221,8 +221,8 @@ var (
 // A FlagsFunc is a hook for defining flags and binding them to parameter values.
 type FlagsFunc[P any] = func(*flag.FlagSet, P)
 
-// An AfterFunc is a hook for validating or transforming parameter values.
-type AfterFunc[P any] = func(P) error
+// An AfterFunc is a hook providing access to the parse result.
+type AfterFunc[P any] = func(*Env[P]) error
 
 // An ActionFunc is a function called when a Command is invoked.
 type ActionFunc[P any] = func(context.Context, *Env[P]) ExitStatus
@@ -442,8 +442,10 @@ func (c *Command[P]) Execute(ctx context.Context, e *Env[P]) ExitStatus {
 		}
 	}
 
+	e.Args = c.flagSet().Args()
+
 	if c.After != nil {
-		if err := c.After(e.Params); err != nil {
+		if err := c.After(e); err != nil {
 			if valErr, isValErr := err.(*ValueError); isValErr {
 				err = c.decorateValueError(valErr)
 			}
@@ -451,8 +453,6 @@ func (c *Command[P]) Execute(ctx context.Context, e *Env[P]) ExitStatus {
 			return ExitUsage
 		}
 	}
-
-	e.Args = c.flagSet().Args()
 
 	if len(e.Args) > 0 {
 		subCmd := c.lookupSubcommand(e.Args[0])
