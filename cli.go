@@ -155,6 +155,7 @@ const (
 type Env[P any] struct {
 	Err    io.Writer         // standard output stream
 	Out    io.Writer         // error output stream
+	In     io.Reader         // standard input stream
 	Args   []string          // command-line arguments
 	Vars   map[string]string // env var names -> values
 	Params P                 // custom data available to Command actions
@@ -174,6 +175,7 @@ func DefaultEnv[P any](params P) *Env[P] {
 	return &Env[P]{
 		Err:    os.Stderr,
 		Out:    os.Stdout,
+		In:     os.Stdin,
 		Args:   os.Args,
 		Vars:   vars,
 		Params: params,
